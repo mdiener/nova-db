@@ -1,0 +1,99 @@
+{
+    # Define the roles supported by nova. Make sure to have "admin" always on
+    # the left and "user" always on the right.
+    "roles": ["admin", "moderator", "user"],
+
+    # Define the roots supported by nova. This also includes the different levels
+    # of permissions on each root.
+    # The first argument specifies the space under which all nodes operate. Available
+    # options are private, shared, protected and public.
+    # private   -- Only the user has access to this node. This means that the first level
+    #              under a private node always consists of userids and can not be changed.
+    # shared    -- A shared node that can be used to provide messaging and other services
+    #              through a secure layer to two or more users. The first level under a
+    #              shared node always consists of a uuid and can not be changed.
+    # protected -- Protected nodes are only accessible to signed in users.
+    # public    -- Public nodes are accessible to everyone.
+    # The second argument specifies which users have write access to said nodes. A user
+    # always has write access to his own tree. In the case of private values only the
+    # user owning the data can see/edit it but roles with write access can delete
+    # the data.
+    "roots": {
+        "contactlist": ["private", "admin"],
+        "messages": ["shared", "user"],
+        "profiles": ["protected", "user"],
+        "reviews": ["protected", "user"],
+        "news": ["protected", "admin"],
+        "users": ["protected", "admin"],
+        "locations": ["public", "admin"],
+        "alerts": ["public", "admin"],
+        "tickers": ["public", "admin"]
+    },
+
+    # Define any preset data here.
+    "presets": {
+        "locations": {
+            "us": {
+                "currency": "usd",
+                "currency_symbol": "$",
+                "language": "en",
+                "density": 1000000,
+                "name": "United States of America",
+                "alerts": [],
+                "states": {
+                    "al": {
+                        "name": "Alabama",
+                        "alerts": [],
+                        "cities": {
+                            "Auburn": {
+                                "alerts": [],
+                            },
+                            "Birmingham": {
+                                "alerts": [],
+                            },
+                            "Dothan": {
+                                "alerts": [],
+                            },
+                            "Gadsden": {
+                                "alerts": [],
+                            },
+                            "Huntsville": {
+                                "alerts": [],
+                            },
+                            "Mobile": {
+                                "alerts": [],
+                            },
+                            "Montgomery": {
+                                "alerts": [],
+                            },
+                            "Muscle Shoals": {
+                                "alerts": [],
+                            },
+                            "Tuscaloosa": {
+                                "alerts": [],
+                            }
+                        }
+                    },
+                    "ak": {
+                        "name": "Alaska",
+                        "alerts": [],
+                        "cities": {
+                            "Anchorage": {
+                                "alerts": [],
+                            },
+                            "Fairbanks": {
+                                "alerts": [],
+                            },
+                            "Juneau": {
+                                "alerts": [],
+                            },
+                            "Kenai Peninsula": {
+                                "alerts": [],
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
