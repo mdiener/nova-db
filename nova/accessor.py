@@ -12,17 +12,6 @@ import nova.connector
 import nova.pgp
 import nova.exceptions
 
-#
-# __access_pool = {}
-#
-#
-# def get_accessor(host=DATABASE_HOST, port=DATABASE_PORT, db=DATABASE):
-#     """Get an instance of an accessor. If there is no instance for this database, create a new one."""
-#     if db not in __access_pool:
-#         __access_pool[db] = Accessor(get_connection(host, port, db))
-#
-#     return __access_pool[db]
-#
 
 class Accessor(object):
     """
@@ -86,7 +75,7 @@ class Accessor(object):
         encrypted_data = self._db_connection.get(root, children[0])
 
         try:
-            pgp = nova.pgp.OpenPGP
+            pgp = nova.pgp.OpenPGP()
             decrypted_data = pgp.decrypt(encrypted_data, userid, password)
         except nova.exceptions.DecryptionError as e:
             raise nova.exceptions.PermissionError('The provided user does not have access to this resource.')

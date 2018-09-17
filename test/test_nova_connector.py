@@ -61,8 +61,25 @@ class ConnectorTest(unittest.TestCase):
 
     def test_keys(self):
         with self.assertRaises(nova.exceptions.ParameterError):
-            self._connector.type(1230)
-            self._connector.type('__unittest', 10)
+            self._connector.keys(1230)
+            self._connector.keys('__unittest', 10)
 
         self.assertListEqual(['string', 'number', 'boolean', 'list', 'dictionary'], self._connector.keys('__unittest'))
-        self._connector.keys('__unittest', 'string')
+
+        with self.assertRaises(nova.exceptions.RedisError):
+            self._connector.keys('__unittest', 'string')
+            self._connector.keys('__unittest', 'list')
+            self._connector.keys('__unittest', 'number')
+            self._connector.keys('__unittest', 'boolean')
+
+    def test_delete(self):
+        with self.assertRaises(nova.exceptions.ParameterError):
+            self._connector.delete(1230)
+            self._connector.delete('__unittest', 10)
+
+        self._connector.delete('__unittest', 'boolean')
+        self.assertIsNone(self._connector.get('__unittest', 'boolean'))
+
+    def test_drop_all_keys(self):
+        self._connector.drop_all_keys()
+        self.assertIsNone(self._connector.get('__unittest'))

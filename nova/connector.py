@@ -163,7 +163,7 @@ class Connection(object):
 
         try:
             data = self._client.execute_command('JSON.OBJKEYS', key, path)
-        except redis.exceptions.RedisError:
+        except (redis.exceptions.RedisError, redis.exceptions.ResponseError):
             raise nova.exceptions.RedisError('Could not retrieve the keys for the provided key and path.')
 
         return_value = []
@@ -192,67 +192,6 @@ class Connection(object):
             self._client.execute_command('JSON.DEL', key, path)
         except redis.exceptions.RedisError:
             raise nova.excpetions.RedisError('Could not remove the specified key and path.')
-
-    def append(self, key, value, path='.'):
-        """
-        Append a value to a value specified by the given key and path.
-
-        Positional Arguments
-        key -- The key to append to
-        value -- The value to append
-
-        Keyword Arguments
-        path -- The path to append the value to
-        """
-        if not isinstance(key, str):
-            raise nova.exceptions.ParameterError('The provided key is not a string.')
-
-        if not isinstance(path, str):
-            raise nova.exceptions.ParameterError('The provided path is not a string.')
-
-        if isinstance(value, list):
-            if not isinstance(self.type(key, path), list):
-                raise nova.exceptions.ParameterError('The provided value does not match the currently stored value.')
-            value = ' '.join(str(entry) for entry in value)
-            cmd = 'JSON.ARRAPPEND'
-
-        if isinstance(value, str):
-            if not isinstance(self.type(key, path), str):
-                raise nova.exceptions.ParameterError('The provided value does not match the currently stored value.')
-            cmd = 'JSON.STRAPPEND'
-
-        try:
-            self._client.execute_command(cmd, key, path, value)
-        except redis.exceptions.RedisError:
-            raise nova.exceptions.RedisError('Could not append the value.')
-
-    def incrementby(self, key, by, path='.'):
-        """
-        Increment the given key and path by a number (only works on stored numbers).
-
-        Positional Arguments
-        key -- The key to increment
-        by -- How much increment by
-
-        Keyword Arguments
-        path -- The path to increment
-        """
-        if not isinstance(key, str):
-            raise nova.exceptions.ParameterError('The provided key is not a string.')
-
-        if not isinstance(path, str):
-            raise nova.exceptions.ParameterError('The provided path is not a string.')
-
-        if not isinstance(by, Number):
-            raise nova.exceptions.ParameterError('The provided by is not a number.')
-
-        if not isinstance(self.type(key, path), Number):
-            raise nova.exceptions.ValueError('The currently stored value under that key and path is not a number.')
-
-        try:
-            self._client.execute_command('JSON.NUMINCRBY', key, path, str(by))
-        except redis.exceptions.RedisError:
-            raise nova.exceptions.RedisError('Could not increment the number.')
 
     def drop_all_keys(self):
         """
