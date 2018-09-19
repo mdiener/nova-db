@@ -86,13 +86,13 @@ class OpenPGP(object):
 
     def delete_key(self, userid):
         if not isinstance(userid, str):
-            raise nova.exception.ParameterError('The provided userid is not a string.')
+            raise nova.exceptions.ParameterError('The provided userid is not a string.')
 
         self._connector.delete('_keys', '.' + userid)
 
     def update_password(self, userid, old_password, new_password):
         if not isinstance(userid, str):
-            raise nova.exception.ParameterError('The provided userid is not a string.')
+            raise nova.exceptions.ParameterError('The provided userid is not a string.')
         if not isinstance(old_password, str):
             raise nova.exceptions.ParameterError('The provided password is not a string.')
         if not isinstance(new_password, str):
