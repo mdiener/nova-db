@@ -45,6 +45,8 @@ class OpenPGP(object):
         keys = []
         for userid in userids:
             keytext = self._connector.get('_keys', '.'+userid)
+            if keytext is None:
+                raise nova.exceptions.EncryptionError('Could not find the user associated with a provided userid.')
             k = pgpy.PGPKey()
             k.parse(keytext)
             keys.append(k)
