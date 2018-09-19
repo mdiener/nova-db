@@ -79,7 +79,7 @@ class OpenPGP(object):
         try:
             with key.unlock(password):
                 pgp_msg = key.decrypt(enc_msg)
-        except pgpy.PGPDecryptionError as e:
+        except (pgpy.errors.PGPDecryptionError, pgpy.errors.PGPError) as e:
             raise nova.exceptions.DecryptionError('Could not decrypt the message with the provided password.')
 
         return pgp_msg.message
