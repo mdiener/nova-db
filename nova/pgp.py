@@ -56,6 +56,7 @@ class OpenPGP(object):
         sessionkey = cipher.gen_key()
 
         enc_msg = keys[0].pubkey.encrypt(pgp_msg, cipher=cipher, sessionkey=sessionkey)
+        keys = keys[1:]
         for key in keys:
             enc_msg = key.pubkey.encrypt(enc_msg, cipher=cipher, sessionkey=sessionkey)
 
