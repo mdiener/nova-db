@@ -100,11 +100,10 @@ class OpenPGP(object):
 
         key = self._get_key(userid)
         try:
-            key.unlock(old_password)
-        except pgpy.PGPDecryptionError as e:
+            with key.unlock(old_password):
+                key.protect(new_password, pgpy.constants.SymmetricKeyAlgorithm.AES256, pgpy.constants.HashAlgorithm.SHA256)
+        except (pgpy.errors.PGPDecryptionError, pgpy.errors.PGPError) as e:
             raise nova.exceptions.KeyUnlockError('Could not unlock the key with the provided password.')
-
-        key.protect(new_password, pgpy.constants.SymmetricKeyAlgorithm.AES256, pgpy.constants.HashAlgorithm.SHA256)
 
         self._connector.set('_keys', str(key), '.'+userid)
 
