@@ -11,7 +11,7 @@ itsdangerous==0.24
 Jinja2==2.10
 MarkupSafe==1.0
 PGPy==0.4.3
-psutil==5.4.5
+psutil==5.6.6
 pyasn1==0.4.4
 pycparser==2.18
 python-gnupg==0.4.3
