@@ -14,7 +14,7 @@ PGPy==0.4.3
 psutil==5.4.5
 pyasn1==0.4.4
 pycparser==2.18
-python-gnupg==0.4.3
+python-gnupg==0.4.4
 python3-memcached==1.51
 redis==2.10.6
 requests==2.18.4
